@@ -101,7 +101,7 @@ defmodule RecurringEvents.Social do
   end
 
   @doc """
-  Updates an events end_date_utc with the last instance from the recurrence pattern.
+  Updates an event's end_date_utc with the last instance from the recurrence pattern.
 
   ## Examples
 
