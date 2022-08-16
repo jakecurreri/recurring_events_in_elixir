@@ -20,7 +20,7 @@ defmodule RecurringEventsWeb.EventController do
 
   def create(conn, %{"event" => event_params}) do
     with {:ok, %Event{} = event} <- Social.create_event(event_params) do
-      updated_event = Social.check_and_update_for_recurrence(event)
+      updated_event = Social.check_and_update_for_recurrence(event, event.is_recurring)
 
       conn
       |> put_status(:created)
@@ -38,7 +38,7 @@ defmodule RecurringEventsWeb.EventController do
     event = Social.get_event!(id)
 
     with {:ok, %Event{} = event} <- Social.update_event(event, event_params) do
-      updated_event = Social.check_and_update_for_recurrence(event)
+      updated_event = Social.check_and_update_for_recurrence(event, event.is_recurring)
 
       render(conn, "show.json", event: updated_event)
     end

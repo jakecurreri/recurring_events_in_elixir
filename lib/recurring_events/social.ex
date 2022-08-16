@@ -109,17 +109,15 @@ defmodule RecurringEvents.Social do
       event
 
   """
-  def check_and_update_for_recurrence(%Event{} = event) do
-    if event.is_recurring do
-      last_event_instance = event 
-        |> Manager.create_instances_of_recurrence
-        |> List.last
+  def check_and_update_for_recurrence(%Event{} = event, false), do: event
+  def check_and_update_for_recurrence(%Event{} = event, nil), do: event
+  def check_and_update_for_recurrence(%Event{} = event, true) do
+    last_event_instance = event 
+      |> Manager.create_instances_of_recurrence
+      |> List.last
 
-      with {:ok, %Event{} = updated_event} <- update_event(event, %{end_date_utc: last_event_instance.end_date_utc}) do
-        updated_event
-      end
-    else
-      event
+    with {:ok, %Event{} = updated_event} <- update_event(event, %{end_date_utc: last_event_instance.end_date_utc}) do
+      updated_event
     end
   end
 
